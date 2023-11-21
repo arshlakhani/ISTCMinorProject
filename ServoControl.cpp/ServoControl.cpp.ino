@@ -35,7 +35,7 @@ int pos4 = 0;
 int pos5 = 0;
 int pos6 = 0;
 // define servo numbers and pins here
-#define servo1 1
+#define servo1 26
 #define servo2 2
 #define servo3 3
 #define servo4 4
@@ -80,17 +80,25 @@ void setup() {
   // Print local IP address and start web server
   Serial.println("");
   Serial.println("WiFi connected.");
+
+  server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
+    String arg1 = request->arg("param1");
+    String arg2 = request->arg("param2");
+    
+    request->send(200, "text/html", "");
+  });
   Serial.println("IP address: ");
   Serial.println(WiFi.localIP());
-  server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
-  // Handling function
-  });
+  
   server.begin();
 
 }
 
+
+
 void loop() {
-  WiFiClient client = server.available();
+  WiFiClient client = server.available();   // Listen for incoming clients
+
   if (client) {                             // If a new client connects,
     currentTime = millis();
     previousTime = currentTime;
@@ -100,7 +108,7 @@ void loop() {
       currentTime = millis();
       if (client.available()) {             // if there's bytes to read from the client,
         char c = client.read();             // read a byte, then
-        Serial.write(c);                    // print it out the serial monitor
+        // Serial.write(c);                    // print it out the serial monitor
         header += c;
         if (c == '\n') {                    // if the byte is a newline character
           // if the current line is blank, you got two newline characters in a row.
@@ -111,10 +119,20 @@ void loop() {
             client.println("HTTP/1.1 200 OK");
             client.println("Content-type:text/html");
             client.println("Connection: close");
-            client.println();  
+            client.println();
+
+                 
             
             //GET /?value=180& HTTP/1.1
-            server.handleClient();         
+            if(header.indexOf("GET /?Id=1&value=")>=0) {
+              pos1 = header.indexOf('=');
+              pos2 = header.indexOf('&');
+              valueString = header.substring(pos1+1, pos2);
+              
+              //Rotate the servo
+              myservo1.write(valueString.toInt());
+              Serial.println(valueString); 
+            }         
             // The HTTP response ends with another blank line
             client.println();
             // Break out of the while loop
@@ -135,3 +153,5 @@ void loop() {
     Serial.println("");
   }
 }
+
+
