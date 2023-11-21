@@ -6,8 +6,19 @@ const char *ssid = "ConForNode";
 const char *password = "12345678";
 
 const int servoPin = 26;  // GPIO pin where the servo signal wire is connected
-Servo myServo;
+Servo myServo1;
+Servo myServo2;
+Servo myServo3;
+Servo myServo4;
+Servo myServo5;
+Servo myServo6;
 
+#define servo1pin 16
+#define servo2pin 17
+#define servo3pin 18
+#define servo4pin 19
+#define servo5pin 21
+#define servo6pin 22
 AsyncWebServer server(80);
 void handleRequest(AsyncWebServerRequest *request) {
     // Get the value of the 'Id' parameter from the URL
@@ -27,16 +38,52 @@ void handleRequest(AsyncWebServerRequest *request) {
     Serial.println(idValue);
     Serial.print("value: ");
     Serial.println(valueValue);
+    
+    valueValue = round(valueValue.toFloat());
+    int id_t = idValue.toInt();
+    switch (id_t){
+      case 1:
+        myServo1.write(valueValue.toInt());
+        Serial.println(idValue +"Servo set at " + valueValue);
+        break;
 
+      case 2:
+        myServo2.write(valueValue.toInt());
+        Serial.println(idValue +"Servo set at " + valueValue);
+        break;
+      case 3:
+        myServo3.write(valueValue.toInt());
+        Serial.println(idValue +"Servo set at " + valueValue);
+        break;
+      case 4:
+        myServo4.write(valueValue.toInt());
+        Serial.println(idValue +"Servo set at " + valueValue);
+        break;
+      case 5:
+        myServo5.write(valueValue.toInt());
+        Serial.println(idValue +"Servo set at " + valueValue);
+        break;
+      case 6:
+        myServo6.write(valueValue.toInt());
+        Serial.println(idValue +"Servo set at " + valueValue);
+        break;
+      default:
+        break;
+    }
     // Respond with the extracted values
-    String response = "Id: " + idValue + ", value: " + valueValue;
+    String response = "Id: " + idValue + ", value: " + String(valueValue.toInt());
     request->send(200, "text/plain", response);
 }
 
 void setup() {
   Serial.begin(115200);
 
-  myServo.attach(servoPin);
+  myServo1.attach(servo1pin);
+  myServo2.attach(servo2pin);
+  myServo3.attach(servo3pin);
+  myServo4.attach(servo4pin);
+  myServo5.attach(servo5pin);
+  myServo6.attach(servo6pin);
 
   // Connect to Wi-Fi
   WiFi.begin(ssid, password);
