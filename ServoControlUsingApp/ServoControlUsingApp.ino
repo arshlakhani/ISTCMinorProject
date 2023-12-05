@@ -32,7 +32,7 @@ void handleRequest(AsyncWebServerRequest *request) {
     if (request->hasParam("value")) {
         valueValue = request->getParam("value")->value();
     }
-
+-
     // Print the extracted values to Serial Monitor
     Serial.print("Id: ");
     Serial.println(idValue);
