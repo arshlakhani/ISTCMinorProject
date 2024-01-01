@@ -5,7 +5,7 @@
 const char *ssid = "ConForNode";
 const char *password = "12345678";
 
-const int servoPin = 26;  // GPIO pin where the servo signal wire is connected
+
 Servo myServo1;
 Servo myServo2;
 Servo myServo3;
