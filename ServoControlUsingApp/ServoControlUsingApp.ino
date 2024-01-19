@@ -1,6 +1,6 @@
 #include <WiFi.h>
 #include <ESPAsyncWebServer.h>
-#include <ESP32_Servo.h>
+#include <ESP32Servo.h>
 
 const char *ssid = "ConForNode";
 const char *password = "12345678";
